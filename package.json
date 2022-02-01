@@ -8,5 +8,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "decompress": "^4.2.1",
+    "path": "^0.12.7",
+    "puppeteer": "^13.1.3"
+  }
 }
