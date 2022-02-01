@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer')
-const fs = require("fs");
 const path = require("path");
 
 const convertHtml = async (htmlFile, pdfOutFile) => {
@@ -14,5 +13,7 @@ const convertHtml = async (htmlFile, pdfOutFile) => {
 
     await browser.close();
 }
+
+module.exports = { convertHtml }
 
 // convertHtml('./example/aboba/index.html', './example/aboba/index.pdf') - пример запуска

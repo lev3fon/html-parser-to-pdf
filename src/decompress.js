@@ -8,4 +8,4 @@ const unZip = async (zipPath, distPath) => {
     }
 }
 
-unZip('./example/htmlToPdf.zip', './example')
+module.exports = { unZip }
