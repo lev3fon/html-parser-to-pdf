@@ -14,4 +14,8 @@ app.post('/pdf', upload.single('kek'), async (req, res) => {
     res.send(req.file.filename)
 })
 
+app.get('/download', async (req, res) => {
+    res.download('./example/aboba/index.pdf')
+})
+
 app.listen(port)
