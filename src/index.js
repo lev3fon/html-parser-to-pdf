@@ -3,7 +3,7 @@ const multer = require('multer')
 const fs = require('fs')
 const path = require('path')
 
-const { unZip } = require('./decompress')
+const { unZip, findIndexHtml, removeFile } = require('./filesHandlers')
 const { convertHtml } = require('./htmlToPdf')
 
 const upload = multer({ dest: './uploads/', limits: { fileSize: 2e+9 } })
@@ -16,11 +16,15 @@ app.get('/hi', (req, res) => {
 
 app.post('/pdf', upload.single('toPdf'), async (req, res) => {
     console.log(req.file)
-    await unZip(`./uploads/${ req.file.filename }`, `./tmp/${ req.file.filename }`)
-    const indexHtml = findIndexHtml(`./tmp/${ req.file.filename }`)
-    await convertHtml(indexHtml, `./pdfs/${ req.file.filename }.pdf`)
+    const fileName = req.file.filename
+    const pdfName = `${ path.basename(req.file.originalname, '.zip') }-${ fileName }.pdf`
+    await unZip(`./uploads/${ fileName }`, `./tmp/${ fileName }`)
+    const indexHtml = findIndexHtml(`./tmp/${ fileName }`)
+    await convertHtml(indexHtml, `./pdfs/${ pdfName }`)
+    await removeFile(`./uploads/${ fileName }`)
+    await removeFile(`./tmp/${ fileName }`)
     // res.send(req.file.filename)
-    res.download(`./pdfs/${ req.file.filename }.pdf`)
+    res.download(`./pdfs/${ pdfName }`)
 })
 
 app.get('/download', async (req, res) => {
@@ -29,28 +33,4 @@ app.get('/download', async (req, res) => {
 
 app.listen(port)
 
-const findIndexHtml = (dirPath) => {
-    const allFiles = getAllFiles(dirPath)
-
-    for (const file of allFiles) {
-        if (path.basename(file) === 'index.html')
-            return file
-    }
-}
-
-const getAllFiles = (dirPath, arrayOfFiles) => {
-    const files = fs.readdirSync(dirPath)
-
-    arrayOfFiles = arrayOfFiles || []
-
-    files.forEach(function (file) {
-        if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-            arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles)
-        } else {
-            arrayOfFiles.push(path.join(dirPath, "/", file))
-        }
-    })
-
-    return arrayOfFiles
-}
 
