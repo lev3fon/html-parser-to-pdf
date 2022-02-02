@@ -15,5 +15,3 @@ const convertHtml = async (htmlFile, pdfOutFile) => {
 }
 
 module.exports = { convertHtml }
-
-// convertHtml('./example/aboba/index.html', './example/aboba/index.pdf') - пример запуска
