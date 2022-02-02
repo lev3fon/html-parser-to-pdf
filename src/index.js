@@ -10,7 +10,7 @@ const app = express()
 const port = 3000
 
 app.get('/hi', (req, res) => {
-    res.send('Hello, I can convert)')
+    res.send('Hi, I can convert)')
 })
 
 app.post('/pdf', upload.single('toPdf'), async (req, res) => {
