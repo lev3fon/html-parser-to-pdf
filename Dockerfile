@@ -6,9 +6,6 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 
-#RUN curl -LO https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-#RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
-#RUN rm google-chrome-stable_current_amd64.deb
 RUN  apt-get update \
      && apt-get install -y wget gnupg ca-certificates \
      && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
@@ -23,6 +20,7 @@ RUN  apt-get update \
      && rm -rf /var/lib/apt/lists/* \
      && wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/sbin/wait-for-it.sh \
      && chmod +x /usr/sbin/wait-for-it.sh
+     
 RUN npm install
 
 COPY . .
